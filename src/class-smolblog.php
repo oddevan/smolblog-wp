@@ -2,7 +2,8 @@
 /**
  * Main class for the Smolblog plugin
  *
- * @package smolblog\smolblog
+ * @package smolblog\wp
+ * @since 2019-05-29
  */
 
 namespace smolblog\wp;
@@ -27,7 +28,15 @@ class Smolblog implements Hookable {
 	 * My init callback.
 	 */
 	public function add_smolblog_dashboard_page() {
-		add_menu_page( 'Smolblog Dashboard', 'Smolblog', 'manage_options', 'smolblog', [ $this, 'smolblog_dashboard' ], 'dashicons-controls-repeat', 3 );
+		add_menu_page(
+			'Smolblog Dashboard',
+			'Smolblog',
+			'manage_options',
+			'smolblog',
+			[ $this, 'smolblog_dashboard' ],
+			'dashicons-controls-repeat',
+			3
+		);
 	}
 
 	/**

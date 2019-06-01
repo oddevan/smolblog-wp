@@ -11,6 +11,7 @@
  * License:     GPL2
  *
  * @package smolblog\wp
+ * @since 2019-05-29
  */
 
 defined( 'ABSPATH' ) || die( 'Please do not.' );

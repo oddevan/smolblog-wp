@@ -10,13 +10,13 @@
  * Domain Path: /languages
  * License:     GPL2
  *
- * @package smolblog\wp
+ * @package Smolblog\WP
  * @since 2019-05-29
  */
 
 defined( 'ABSPATH' ) || die( 'Please do not.' );
-require_once __DIR__ . '/vendor/autoload.php';
-require_once __DIR__ . '/src/class-smolblog.php';
 
-$plugin = new smolblog\wp\Smolblog();
+require_once __DIR__ . '/vendor/autoload.php';
+
+$plugin = new Smolblog\WP\Smolblog();
 $plugin->register_hooks();

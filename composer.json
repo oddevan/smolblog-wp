@@ -3,5 +3,10 @@
         "webdevstudios/oops-wp": "^0.2.0",
         "j7mbo/twitter-api-php": "^1.0",
         "tumblr/tumblr": "^0.4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Smolblog\\WP\\": "src/"
+        }
     }
 }

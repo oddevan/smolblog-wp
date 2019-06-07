@@ -2,11 +2,11 @@
 /**
  * Main class for the Smolblog plugin
  *
- * @package smolblog\wp
+ * @package Smolblog\WP
  * @since 2019-05-29
  */
 
-namespace smolblog\wp;
+namespace Smolblog\WP;
 
 use WebDevStudios\OopsWP\Utility\Hookable;
 
@@ -44,5 +44,11 @@ class Smolblog implements Hookable {
 	 */
 	public function smolblog_dashboard() {
 		echo '<h1>Smolblog</h1>';
+
+		if ( get_option( 'smolblog_twitter_user_key' ) ) {
+			echo '<p>Authenticated with Twitter as [account]</p>';
+		} else {
+			echo '<p>Sign in link coming soon.</p>';
+		}
 	}
 }

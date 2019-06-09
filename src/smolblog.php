@@ -10,6 +10,8 @@ namespace Smolblog\WP;
 
 use WebDevStudios\OopsWP\Utility\Hookable;
 
+require_once '../smolblog-config.php';
+
 /**
  * Main class for the Smolblog plugin
  *
@@ -22,6 +24,18 @@ class Smolblog implements Hookable {
 	public function register_hooks() {
 			// Put your hooks here!
 			add_action( 'admin_menu', [ $this, 'add_smolblog_dashboard_page' ] );
+			add_action( 'admin_init', [ $this, 'handle_initiate_oauth' ] );
+	}
+
+	public function handle_initiate_oauth() {
+		if ( isset( $_GET['smolblog_action'] ) ) {
+			switch( $_GET['smolboog_action'] ) {
+				case 'twitter_engage' :
+				$connection = new Abraham\TwitterOAuth\TwitterOAuth( SMOLBLOG_TWITTER_APPLICATION_KEY, SMOLBLOG_TWITTER_APPLICATION_SECRET );
+
+				
+			}
+		}
 	}
 
 	/**
@@ -48,7 +62,7 @@ class Smolblog implements Hookable {
 		if ( get_option( 'smolblog_twitter_user_key' ) ) {
 			echo '<p>Authenticated with Twitter as [account]</p>';
 		} else {
-			echo '<p>Sign in link coming soon.</p>';
+			echo '<p><a href="?page=smolblog&amp;action=twitter-connect" class="button">Sign in with Twitter</a></p>';
 		}
 	}
 }

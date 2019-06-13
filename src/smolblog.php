@@ -69,19 +69,22 @@ class Smolblog implements Hookable {
 	 * Output the Smolblog dashboard page
 	 */
 	public function smolblog_dashboard() {
-		echo '<h1>Smolblog</h1>';
+?>
+		<h1>Smolblog</h1>
 
-		if ( get_option( 'smolblog_twitter_username' ) ) {
-			echo '<p>Authenticated with Twitter as ' . get_option( 'smolblog_twitter_username' ) . '</p>';
-		} else {
-			echo '<p><a href="/wp-admin/admin.php/smolblog/oauth/init/twitter" class="button">Sign in with Twitter</a></p>';
-		}
+		<?php if ( get_option( 'smolblog_twitter_username' ) ) : ?>
+			<p>Authenticated with Twitter as <?php echo esc_html( get_option( 'smolblog_twitter_username' ) ); ?></p>
+
+			<p><a href="#" class="button">Import latest 10 tweets</a>
+		<?php else : ?>
+			<p><a href="/wp-admin/admin.php/smolblog/oauth/init/twitter" class="button">Sign in with Twitter</a></p>
+		<?php endif; ?>
+<?php
 	}
 
 	public function oauth_twitter_engage() {
 		$callback_url = 'https://smolblog.local/wp-admin/admin.php/smolblog/oauth/callback/twitter';
-
-		$connection = new TwitterOAuth( SMOLBLOG_TWITTER_APPLICATION_KEY, SMOLBLOG_TWITTER_APPLICATION_SECRET );
+		$connection   = new TwitterOAuth( SMOLBLOG_TWITTER_APPLICATION_KEY, SMOLBLOG_TWITTER_APPLICATION_SECRET );
 
 		$request_token = $connection->oauth( 'oauth/request_token', array( 'oauth_callback' => $callback_url ) );
 

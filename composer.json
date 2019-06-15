@@ -3,7 +3,8 @@
         "webdevstudios/oops-wp": "^0.2.0",
         "j7mbo/twitter-api-php": "^1.0",
         "tumblr/tumblr": "^0.4.0",
-        "abraham/twitteroauth": "^1.0"
+        "abraham/twitteroauth": "^1.0",
+        "league/commonmark": "^0.18.1"
     },
     "autoload": {
         "psr-4": {

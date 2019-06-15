@@ -127,10 +127,10 @@ class Smolblog implements Hookable {
 		echo "Loading Twitter...\n";
 
 		$twitter = new \TwitterAPIExchange( array(
-			'oauth_access_token'        => SMOLBLOG_TWITTER_APPLICATION_KEY,
-			'oauth_access_token_secret' => SMOLBLOG_TWITTER_APPLICATION_SECRET,
-			'consumer_key'              => $access_token['oauth_token'],
-			'consumer_secret'           => $access_token['oauth_token_secret'],
+			'consumer_key'              => SMOLBLOG_TWITTER_APPLICATION_KEY,
+			'consumer_secret'           => SMOLBLOG_TWITTER_APPLICATION_SECRET,
+			'oauth_access_token'        => $access_token['oauth_token'],
+			'oauth_access_token_secret' => $access_token['oauth_token_secret'],
 		));
 
 		$url      = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
@@ -138,6 +138,11 @@ class Smolblog implements Hookable {
 
 		$twitter_json     = $twitter->setGetfield( $getfield )->buildOauth( $url, 'GET' )->performRequest();
 		$twitter_response = json_decode( $twitter_json );
+
+		if ( ! is_array( $twitter_response ) ) {
+			print_r( $twitter_response );
+			return;
+		}
 
 		$mkdwn = new \League\CommonMark\CommonMarkConverter();
 

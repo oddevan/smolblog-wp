@@ -147,138 +147,143 @@ class Smolblog implements Hookable {
 		$mkdwn = new \League\CommonMark\CommonMarkConverter();
 
 		foreach ( $twitter_response as $tweet ) {
-			$frontmatter = array(
-				'date'           => $tweet->created_at,
-				'slug'           => $tweet->id,
-				'twitter_id'     => $tweet->id,
-				'tags'           => array(),
-				'categories'     => array(),
-				'resources'      => array(),
-				'format'         => 'aside',
-				'reply_to_id'    => false,
-				'thread_prev_id' => false,
-			);
+			$this->import_tweet( $tweet );
+		}
+	}
 
-			$body = mb_substr( $tweet->full_text, $tweet->display_text_range[0], ( $tweet->display_text_range[1] - $tweet->display_text_range[0] ) );
+	private function import_tweet( $tweet ) {
+		$frontmatter = array(
+			'date'           => $tweet->created_at,
+			'slug'           => $tweet->id,
+			'twitter_id'     => $tweet->id,
+			'tags'           => array(),
+			'categories'     => array(),
+			'resources'      => array(),
+			'format'         => 'aside',
+			'reply_to_id'    => false,
+			'thread_prev_id' => false,
+		);
 
-			if ( ! empty( $tweet->retweeted_status ) ) {
-				unset( $body );
-				$body = $this->getTweetEmbed( $tweet->retweeted_status->id );
-			} else {
-				if ( $tweet->in_reply_to_status_id ) {
-					if ( $tweet->in_reply_to_user_id !== $tweet->user->id ) {
-						$body = $this->getTweetEmbed( $tweet->in_reply_to_status_id ) . "\n\n" . $body;
-						$frontmatter['reply_to_id'] = $tweet->in_reply_to_status_id;
-					} else {
-						$frontmatter['thread_prev_id'] = $tweet->in_reply_to_status_id;
-					}
-				} elseif ( $tweet->is_quote_status ) {
-					$body = $this->getTweetEmbed( $tweet->quoted_status_id ) . "\n\n" . $body;
+		$body = mb_substr( $tweet->full_text, $tweet->display_text_range[0], ( $tweet->display_text_range[1] - $tweet->display_text_range[0] ) );
+
+		if ( ! empty( $tweet->retweeted_status ) ) {
+			unset( $body );
+			$body = $this->getTweetEmbed( $tweet->retweeted_status->id );
+		} else {
+			if ( $tweet->in_reply_to_status_id ) {
+				if ( $tweet->in_reply_to_user_id !== $tweet->user->id ) {
+					$body = $this->getTweetEmbed( $tweet->in_reply_to_status_id ) . "\n\n" . $body;
+					$frontmatter['reply_to_id'] = $tweet->in_reply_to_status_id;
 				} else {
-					$frontmatter['categories'][] = 'micropost';
-					$frontmatter['format']       = 'status';
+					$frontmatter['thread_prev_id'] = $tweet->in_reply_to_status_id;
+				}
+			} elseif ( $tweet->is_quote_status && isset( $tweet->quoted_status_id ) ) {
+				$body = $this->getTweetEmbed( $tweet->quoted_status_id ) . "\n\n" . $body;
+			} else {
+				$frontmatter['categories'][] = 'micropost';
+				$frontmatter['format']       = 'status';
+			}
+
+			foreach ( $tweet->entities->urls as $tacolink ) {
+				if ( $tweet->is_quote_status && isset( $tweet->quoted_status_id ) ) {
+					$ind = strrpos( $tacolink->expanded_url, '/' );
+					if ( substr( $tacolink->expanded_url, $ind + 1 ) === $tweet->quoted_status_id ) {
+						$body = str_replace( $tacolink->url, '', $body );
+					}
 				}
 
-				foreach ( $tweet->entities->urls as $tacolink ) {
-					if ( $tweet->is_quote_status ) {
-						$ind = strrpos( $tacolink->expanded_url, '/' );
-						if ( substr( $tacolink->expanded_url, $ind + 1 ) === $tweet->quoted_status_id ) {
-							$body = str_replace( $tacolink->url, '', $body );
-						}
-					}
+				$body = str_replace(
+					$tacolink->url,
+					'[' . $tacolink->display_url . '](' . $tacolink->expanded_url . ')',
+					$body
+				);
+			}
 
+			$already_mentioned = array();
+			foreach ( $tweet->entities->user_mentions as $atmention ) {
+				if ( ! in_array( $atmention->screen_name, $already_mentioned, true ) ) {
 					$body = str_replace(
-						$tacolink->url,
-						'[' . $tacolink->display_url . '](' . $tacolink->expanded_url . ')',
+						'@' . $atmention->screen_name,
+						'[@' . $atmention->screen_name . '](https://twitter.com/' . $atmention->screen_name . ')',
 						$body
 					);
-				}
-
-				$already_mentioned = array();
-				foreach ( $tweet->entities->user_mentions as $atmention ) {
-					if ( ! in_array( $atmention->screen_name, $already_mentioned, true ) ) {
-						$body = str_replace(
-							'@' . $atmention->screen_name,
-							'[@' . $atmention->screen_name . '](https://twitter.com/' . $atmention->screen_name . ')',
-							$body
-						);
-						$already_mentioned[] = $atmention->screen_name;
-					}
-				}
-
-				if ( ! empty( $tweet->entities->hashtags ) ) {
-					foreach ( $tweet->entities->hashtags as $hashtag ) {
-						$body = str_replace(
-							'#' . $hashtag->text,
-							'[#' . $hashtag->text . '](https://twitter.com/hashtag/' . $hashtag->text . ')',
-							$body
-						);
-						$frontmatter['tags'][] = $hashtag->text;
-					}
+					$already_mentioned[] = $atmention->screen_name;
 				}
 			}
 
-			$body = $mkdwn->convertToHtml( $body );
-
-			$new_post = array(
-				'post_title'   => '',
-				'post_content' => $body,
-				'post_date'    => $this->parse_date( $frontmatter['date'] ),
-				'post_excerpt' => '',
-				'post_name'    => $frontmatter['slug'],
-				'post_author'  => get_current_user_id(),
-				'tags_input'   => $frontmatter['tags'],
-			);
-
-			$id = wp_insert_post( $new_post );
-
-			if ( $id ) {
-				echo "Imported tweet {$frontmatter['twitter_id']} as post {$id}\n";
-
-				add_post_meta( $id, 'smolblog_twitter_id', $frontmatter['twitter_id'] );
-				if ( $frontmatter['reply_to_id'] ) {
-					add_post_meta( $id, 'smolblog_twitter_replyid', $frontmatter['reply_to_id'] );
+			if ( ! empty( $tweet->entities->hashtags ) ) {
+				foreach ( $tweet->entities->hashtags as $hashtag ) {
+					$body = str_replace(
+						'#' . $hashtag->text,
+						'[#' . $hashtag->text . '](https://twitter.com/hashtag/' . $hashtag->text . ')',
+						$body
+					);
+					$frontmatter['tags'][] = $hashtag->text;
 				}
-				if ( $frontmatter['thread_prev_id'] ) {
-					add_post_meta( $id, 'smolblog_twitter_threadprevid', $frontmatter['thread_prev_id'] );
-				}
+			}
+		}
 
-				if ( ! empty( $tweet->extended_entities->media ) ) {
-					foreach ( $tweet->extended_entities->media as $media ) {
-						if ( 'photo' === $media->type ) {
-							$imgid = $this->sideload_media( $media->media_url_https, $id );
+		$body = $mkdwn->convertToHtml( $body );
 
-							$body .= "\n\n" . '<!-- wp:image {"id":' . $imgid . '} -->
-	<figure class="wp-block-image"><img src="' . wp_get_attachment_url( $imgid ) . '" alt="" class="wp-image-' . $imgid . '"/></figure>
-	<!-- /wp:image -->';
-						} elseif ( 'video' === $media->type || 'animated_gif' === $media->type ) {
-							$video_url     = '#';
-							$video_bitrate = -1;
-							foreach ( $media->video_info->variants as $vidinfo ) {
-								if ( 'video/mp4' === $vidinfo->content_type && $vidinfo->bitrate > $video_bitrate ) {
-									$video_bitrate = $vidinfo->bitrate;
-									$video_url     = $vidinfo->url;
-								}
+		$new_post = array(
+			'post_title'   => '',
+			'post_content' => $body,
+			'post_date'    => $this->parse_date( $frontmatter['date'] ),
+			'post_excerpt' => '',
+			'post_status'  => 'publish',
+			'post_name'    => $frontmatter['slug'],
+			'post_author'  => get_current_user_id(),
+			'tags_input'   => $frontmatter['tags'],
+		);
+
+		$id = wp_insert_post( $new_post );
+
+		if ( $id ) {
+			echo "Imported tweet {$frontmatter['twitter_id']} as post {$id}\n";
+
+			add_post_meta( $id, 'smolblog_twitter_id', $frontmatter['twitter_id'] );
+			if ( $frontmatter['reply_to_id'] ) {
+				add_post_meta( $id, 'smolblog_twitter_replyid', $frontmatter['reply_to_id'] );
+			}
+			if ( $frontmatter['thread_prev_id'] ) {
+				add_post_meta( $id, 'smolblog_twitter_threadprevid', $frontmatter['thread_prev_id'] );
+			}
+
+			if ( empty( $tweet->retweeted_status ) && ! empty( $tweet->extended_entities->media ) ) {
+				foreach ( $tweet->extended_entities->media as $media ) {
+					if ( 'photo' === $media->type ) {
+						$imgid = $this->sideload_media( $media->media_url_https, $id );
+
+						$body .= "\n\n" . '<!-- wp:image {"id":' . $imgid . '} -->
+<figure class="wp-block-image"><img src="' . wp_get_attachment_url( $imgid ) . '" alt="" class="wp-image-' . $imgid . '"/></figure>
+<!-- /wp:image -->';
+					} elseif ( 'video' === $media->type || 'animated_gif' === $media->type ) {
+						$video_url     = '#';
+						$video_bitrate = -1;
+						foreach ( $media->video_info->variants as $vidinfo ) {
+							if ( 'video/mp4' === $vidinfo->content_type && $vidinfo->bitrate > $video_bitrate ) {
+								$video_bitrate = $vidinfo->bitrate;
+								$video_url     = $vidinfo->url;
 							}
-
-							$vidid = $this->sideload_media( $video_url, $id );
-
-							$body .= "\n\n" . '<!-- wp:video {"id":' . $vidid . '} -->
-	<figure class="wp-block-video"><video controls ';
-
-							if ( 'animated_gif' === $media->type ) {
-								$body .= 'autoplay loop ';
-							}
-
-							$body .= 'preload="auto" src="' . wp_get_attachment_url( $vidid ) . '"></video></figure>
-	<!-- /wp:video -->';
 						}
-					}
 
-					$new_post['ID']           = $id;
-					$new_post['post_content'] = $body;
-					wp_insert_post( $new_post );
+						$vidid = $this->sideload_media( $video_url, $id );
+
+						$body .= "\n\n" . '<!-- wp:video {"id":' . $vidid . '} -->
+<figure class="wp-block-video"><video controls ';
+
+						if ( 'animated_gif' === $media->type ) {
+							$body .= 'autoplay loop ';
+						}
+
+						$body .= 'preload="auto" src="' . wp_get_attachment_url( $vidid ) . '"></video></figure>
+<!-- /wp:video -->';
+					}
 				}
+
+				$new_post['ID']           = $id;
+				$new_post['post_content'] = $body;
+				wp_insert_post( $new_post );
 			}
 		}
 	}

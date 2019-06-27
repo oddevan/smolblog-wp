@@ -87,6 +87,9 @@ class Smolblog implements Hookable {
 <?php
 	}
 
+	/**
+	 * Begin an OAuth request to Twitter
+	 */
 	public function oauth_twitter_engage() {
 		$callback_url = 'https://smolblog.local/wp-admin/admin.php/smolblog/oauth/callback/twitter';
 		$connection   = new TwitterOAuth( SMOLBLOG_TWITTER_APPLICATION_KEY, SMOLBLOG_TWITTER_APPLICATION_SECRET );
@@ -101,11 +104,14 @@ class Smolblog implements Hookable {
 		die;
 	}
 
+	/**
+	 * Process an OAuth request from Twitter
+	 */
 	public function oauth_twitter_callback() {
 		$request_token = get_transient( 'smolblog_twitter_oauth_request_' . get_current_blog_id() );
 
 		if ( isset( $_REQUEST['oauth_token'] ) && $request_token['oauth_token'] !== $_REQUEST['oauth_token'] ) {
-			wp_die( 'OAuth tokens did not match: Got "' . $_REQUEST['oauth_token'] . '" but expected "' . $request_token['oauth_token'] . '".' );
+			wp_die( 'OAuth tokens did not match; <a href="/wp-admin/admin.php/smolblog/oauth/init/twitter">try again</a>' );
 		}
 
 		$connection = new TwitterOAuth( SMOLBLOG_TWITTER_APPLICATION_KEY,
@@ -121,6 +127,11 @@ class Smolblog implements Hookable {
 		header( 'Location: /wp-admin/admin.php?page=smolblog', true, 302 );
 	}
 
+	/**
+	 * Import the twitter timeline of the currently authorized account.
+	 *
+	 * @return void
+	 */
 	public function import_twitter() {
 		$access_token = get_option( 'smolblog_oauth_twitter' );
 
@@ -151,6 +162,11 @@ class Smolblog implements Hookable {
 		}
 	}
 
+	/**
+	 * Import the given tweet.
+	 *
+	 * @param Object $tweet parsed API response from Twitter representing a single tweet.
+	 */
 	private function import_tweet( $tweet ) {
 		$frontmatter = array(
 			'date'           => $tweet->created_at,
@@ -164,7 +180,11 @@ class Smolblog implements Hookable {
 			'thread_prev_id' => false,
 		);
 
-		$body = mb_substr( $tweet->full_text, $tweet->display_text_range[0], ( $tweet->display_text_range[1] - $tweet->display_text_range[0] ) );
+		$body = mb_substr(
+			$tweet->full_text,
+			$tweet->display_text_range[0],
+			( $tweet->display_text_range[1] - $tweet->display_text_range[0] )
+		);
 
 		if ( ! empty( $tweet->retweeted_status ) ) {
 			unset( $body );
@@ -288,6 +308,13 @@ class Smolblog implements Hookable {
 		}
 	}
 
+	/**
+	 * Imports the media found at the given URL into the WP Media Library linked to the given post
+	 *
+	 * @param string $url Address of the remote media to import.
+	 * @param int    $post_id ID of the WordPress post this media should be attached to.
+	 * @return int WordPress ID of imported media.
+	 */
 	private function sideload_media( $url, $post_id ) {
 		$tmp = download_url( $url );
 		if ( is_wp_error( $tmp ) ) {
@@ -322,6 +349,14 @@ class Smolblog implements Hookable {
 		return $id;
 	}
 
+	/**
+	 * Use cURL to follow all the redirects to get the final URL. Twitter will redirect
+	 * `twitter.com/statuses/[tweet id]` to its proper place, and WordPress needs this
+	 * final URL for its oEmbed to work.
+	 *
+	 * @param string $url URL to search.
+	 * @return string URL at the end of all redirects
+	 */
 	private function getfinalurl( $url ) {
 		// via https://stackoverflow.com/questions/17472329/php-get-url-of-redirect-from-source-url .
 		$ch = curl_init();
@@ -336,6 +371,12 @@ class Smolblog implements Hookable {
 		return $newurl;
 	}
 
+	/**
+	 * Given a tweet ID number, return the Gutenberg block to embed the tweet.
+	 *
+	 * @param string $twid ID number of tweet.
+	 * @return string Embed code for given tweet.
+	 */
 	private function getTweetEmbed( $twid ) {
 		$twurl = $this->getfinalurl( 'https://twitter.com/statuses/' . $twid );
 
@@ -349,8 +390,8 @@ class Smolblog implements Hookable {
 	/**
 	 * Convert date in CSV file to 1999-12-31 23:52:00 format
 	 *
-	 * @param string $data
-	 * @return string
+	 * @param string $data Date to convert.
+	 * @return string Formatted date.
 	 */
 	private function parse_date( $data ) {
 		$timestamp = strtotime( $data );

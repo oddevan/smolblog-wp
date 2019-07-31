@@ -14,9 +14,11 @@
  * @since 2019-05-29
  */
 
+namespace Smolblog\WP;
+
 defined( 'ABSPATH' ) || die( 'Please do not.' );
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-$plugin = new Smolblog\WP\Smolblog();
-$plugin->register_hooks();
+$plugin = new Smolblog();
+$plugin->run();

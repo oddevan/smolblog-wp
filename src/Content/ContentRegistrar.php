@@ -26,6 +26,7 @@ class ContentRegistrar extends Service {
 	 * @since 0.1.0
 	 */
 	protected $post_types = [
+		PostType\SocialConnection::class,
 	];
 
 	/**
@@ -35,8 +36,8 @@ class ContentRegistrar extends Service {
 	 * @var Array $taxonomies array of Taxonomy classes
 	 * @since 0.1.0
 	 */
-	protected $taxonomies = [
-	];
+	// protected $taxonomies = [
+	// ];
 
 	/**
 	 * Called by Plugin class; register the hooks for this plugin
@@ -46,7 +47,7 @@ class ContentRegistrar extends Service {
 	 */
 	public function register_hooks() {
 		add_action( 'init', [ $this, 'register_post_types' ] );
-		add_action( 'init', [ $this, 'register_taxonomies' ] );
+		// add_action( 'init', [ $this, 'register_taxonomies' ] );
 	}
 
 	/**

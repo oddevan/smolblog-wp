@@ -9,6 +9,10 @@
         {
             "type": "git",
             "url": "git@github.com:WebDevStudios/WDS-Required-Plugins.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/oddevan/oops-generators"
         }
     ],
     "require": {
@@ -19,7 +23,8 @@
         "league/commonmark": "^0.18.1",
         "wpackagist-plugin/advanced-custom-fields": "^5.8",
         "wpackagist-theme/twentysixteen": "*",
-        "webdevstudios/wds-required-plugins": "^1.2"
+        "webdevstudios/wds-required-plugins": "^1.2",
+        "oddevan/oops-generators": "dev-master"
     },
     "autoload": {
         "psr-4": {
@@ -31,6 +36,13 @@
             "plugins/{$name}": ["type:wordpress-plugin"],
             "mu-plugins/{$name}": ["type:wordpress-muplugin"],
             "themes/{$name}": ["type:wordpress-theme"]
+        },
+        "oopsgen": {
+            "base_namespace": "Smolblog\\WP\\",
+            "base_dir": "plugins/smolblog-wp/src/"
         }
+    },
+    "scripts": {
+        "oopsgen": "oddevan\\oopsGenerators\\Main::go"
     }
 }

@@ -1,14 +1,36 @@
 {
+    "name": "smolblog/smolblog-wp",
+    "description": "Bigger than micro, smaller than medium.",
+    "repositories":[
+        {
+            "type":"composer",
+            "url":"https://wpackagist.org"
+        },
+        {
+            "type": "git",
+            "url": "git@github.com:WebDevStudios/WDS-Required-Plugins.git"
+        }
+    ],
     "require": {
         "webdevstudios/oops-wp": "^0.2.0",
         "j7mbo/twitter-api-php": "^1.0",
         "tumblr/tumblr": "^0.4.0",
         "abraham/twitteroauth": "^1.0",
-        "league/commonmark": "^0.18.1"
+        "league/commonmark": "^0.18.1",
+        "wpackagist-plugin/advanced-custom-fields": "^5.8",
+        "wpackagist-theme/twentysixteen": "*",
+        "webdevstudios/wds-required-plugins": "^1.2"
     },
     "autoload": {
         "psr-4": {
-            "Smolblog\\WP\\": "src/"
+            "Smolblog\\WP\\": "plugins/smolblog-wp/src/"
+        }
+    },
+    "extra": {
+        "installer-paths": {
+            "plugins/{$name}": ["type:wordpress-plugin"],
+            "mu-plugins/{$name}": ["type:wordpress-muplugin"],
+            "themes/{$name}": ["type:wordpress-theme"]
         }
     }
 }

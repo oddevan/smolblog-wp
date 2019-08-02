@@ -18,7 +18,5 @@ namespace Smolblog\WP;
 
 defined( 'ABSPATH' ) || die( 'Please do not.' );
 
-require_once __DIR__ . '/vendor/autoload.php';
-
 $plugin = new Smolblog();
 $plugin->run();

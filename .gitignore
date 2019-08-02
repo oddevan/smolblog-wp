@@ -1,3 +1,9 @@
 composer.phar
 /vendor/
 smolblog-config.php
+/themes/*
+/plugins/*
+/mu-plugins/*
+!/mu-plugins/smolblog.php
+!/plugins/smolblog-wp
+!/plugins/index.php

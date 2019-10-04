@@ -1,6 +1,15 @@
 {
     "name": "smolblog/smolblog-wp",
     "description": "Bigger than micro, smaller than medium.",
+    "version": "0.1.0",
+    "authors": [
+        {
+            "name": "Evan Hildreth",
+            "email": "me@eph.me",
+            "homepage": "http://eph.me",
+            "role": "Developer"
+        }
+    ],
     "repositories":[
         {
             "type":"composer",
@@ -36,13 +45,9 @@
             "plugins/{$name}": ["type:wordpress-plugin"],
             "mu-plugins/{$name}": ["type:wordpress-muplugin"],
             "themes/{$name}": ["type:wordpress-theme"]
-        },
-        "oopsgen": {
-            "base_namespace": "Smolblog\\WP\\",
-            "base_dir": "plugins/smolblog-wp/src/"
         }
     },
-    "scripts": {
-        "oopsgen": "oddevan\\oopsGenerators\\Main::go"
-    }
+	"scripts": {
+		"oopsgen": "oddevan\\oopsGenerators\\Main::go"
+	}
 }

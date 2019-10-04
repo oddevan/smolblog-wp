@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "020ba5f97720356541365e63d844daff",
+    "content-hash": "5734b7f5ff3941188c5b979b6634224c",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -62,16 +62,16 @@
         },
         {
             "name": "composer/installers",
-            "version": "v1.6.0",
+            "version": "v1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "cfcca6b1b60bc4974324efb5783c13dca6932b5b"
+                "reference": "141b272484481432cda342727a427dc1e206bfa0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/cfcca6b1b60bc4974324efb5783c13dca6932b5b",
-                "reference": "cfcca6b1b60bc4974324efb5783c13dca6932b5b",
+                "url": "https://api.github.com/repos/composer/installers/zipball/141b272484481432cda342727a427dc1e206bfa0",
+                "reference": "141b272484481432cda342727a427dc1e206bfa0",
                 "shasum": ""
             },
             "require": {
@@ -127,6 +127,7 @@
                 "RadPHP",
                 "SMF",
                 "Thelia",
+                "Whmcs",
                 "WolfCMS",
                 "agl",
                 "aimeos",
@@ -149,6 +150,7 @@
                 "installer",
                 "itop",
                 "joomla",
+                "known",
                 "kohana",
                 "laravel",
                 "lavalite",
@@ -178,7 +180,7 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2018-08-27T06:10:37+00:00"
+            "time": "2019-08-12T15:00:31+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -592,12 +594,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/oddevan/oops-generators.git",
-                "reference": "482398fd95bf52ba3718538c9e530fe79879f718"
+                "reference": "241512f8a2b62b555d5c8161e7538acb2b01f725"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oddevan/oops-generators/zipball/482398fd95bf52ba3718538c9e530fe79879f718",
-                "reference": "482398fd95bf52ba3718538c9e530fe79879f718",
+                "url": "https://api.github.com/repos/oddevan/oops-generators/zipball/241512f8a2b62b555d5c8161e7538acb2b01f725",
+                "reference": "241512f8a2b62b555d5c8161e7538acb2b01f725",
                 "shasum": ""
             },
             "require": {
@@ -609,12 +611,17 @@
                     "oddevan\\oopsGenerators\\": "src/"
                 }
             },
+            "scripts": {
+                "oopsgen": [
+                    "oddevan\\oopsGenerators\\Main::go"
+                ]
+            },
             "description": "A set of scripts to help bootstrap your OOPS-WP work even further",
             "support": {
                 "source": "https://github.com/oddevan/oops-generators/tree/master",
                 "issues": "https://github.com/oddevan/oops-generators/issues"
             },
-            "time": "2019-08-02T21:23:33+00:00"
+            "time": "2019-10-04T18:13:21+00:00"
         },
         {
             "name": "psr/http-message",
@@ -757,16 +764,16 @@
         },
         {
             "name": "webdevstudios/oops-wp",
-            "version": "0.2.0",
+            "version": "0.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WebDevStudios/oops-wp.git",
-                "reference": "bda6b19e002748b0ff1344ad5aee5f2685f78a4f"
+                "reference": "780dce74d0afe81500eba4aee7fe0bda8445d3db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WebDevStudios/oops-wp/zipball/bda6b19e002748b0ff1344ad5aee5f2685f78a4f",
-                "reference": "bda6b19e002748b0ff1344ad5aee5f2685f78a4f",
+                "url": "https://api.github.com/repos/WebDevStudios/oops-wp/zipball/780dce74d0afe81500eba4aee7fe0bda8445d3db",
+                "reference": "780dce74d0afe81500eba4aee7fe0bda8445d3db",
                 "shasum": ""
             },
             "require": {
@@ -790,7 +797,7 @@
                 }
             ],
             "description": "A collection of interfaces and class structures to promote object-oriented programming practices in WordPress.",
-            "time": "2019-04-01T22:18:00+00:00"
+            "time": "2019-09-03T00:45:21+00:00"
         },
         {
             "name": "webdevstudios/wds-required-plugins",
@@ -809,15 +816,15 @@
         },
         {
             "name": "wpackagist-plugin/advanced-custom-fields",
-            "version": "5.8.2",
+            "version": "5.8.3",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/advanced-custom-fields/",
-                "reference": "tags/5.8.2"
+                "reference": "tags/5.8.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/advanced-custom-fields.5.8.2.zip"
+                "url": "https://downloads.wordpress.org/plugin/advanced-custom-fields.5.8.3.zip"
             },
             "require": {
                 "composer/installers": "~1.0"

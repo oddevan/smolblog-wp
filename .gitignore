@@ -8,3 +8,4 @@ debug.log
 !/mu-plugins/smolblog.php
 !/plugins/smolblog-wp
 !/plugins/index.php
+!/themes/smolblog-wp

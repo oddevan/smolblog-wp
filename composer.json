@@ -22,18 +22,21 @@
         {
             "type": "vcs",
             "url": "https://github.com/oddevan/oops-generators"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/webdevstudios/oops-wp"
         }
     ],
     "require": {
-        "webdevstudios/oops-wp": "^0.2.0",
+        "webdevstudios/oops-wp": "dev-refactor/meta-box-support",
         "j7mbo/twitter-api-php": "^1.0",
         "tumblr/tumblr": "^0.4.0",
         "abraham/twitteroauth": "^1.0",
         "league/commonmark": "^0.18.1",
         "wpackagist-plugin/advanced-custom-fields": "^5.8",
         "wpackagist-theme/twentysixteen": "*",
-        "webdevstudios/wds-required-plugins": "^1.2",
-        "oddevan/oops-generators": "dev-master"
+        "webdevstudios/wds-required-plugins": "^1.2"
     },
     "autoload": {
         "psr-4": {

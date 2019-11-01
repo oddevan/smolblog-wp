@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c69113c7251170df58710572907216a",
+    "content-hash": "e7683554b92b8b194fe22b29fa68a78d",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -181,73 +181,6 @@
                 "zikula"
             ],
             "time": "2019-08-12T15:00:31+00:00"
-        },
-        {
-            "name": "doctrine/inflector",
-            "version": "v1.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/doctrine/inflector.git",
-                "reference": "5527a48b7313d15261292c149e55e26eae771b0a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/inflector/zipball/5527a48b7313d15261292c149e55e26eae771b0a",
-                "reference": "5527a48b7313d15261292c149e55e26eae771b0a",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^6.2"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.3.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Doctrine\\Common\\Inflector\\": "lib/Doctrine/Common/Inflector"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Roman Borschel",
-                    "email": "roman@code-factory.org"
-                },
-                {
-                    "name": "Benjamin Eberlei",
-                    "email": "kontakt@beberlei.de"
-                },
-                {
-                    "name": "Guilherme Blanco",
-                    "email": "guilhermeblanco@gmail.com"
-                },
-                {
-                    "name": "Jonathan Wage",
-                    "email": "jonwage@gmail.com"
-                },
-                {
-                    "name": "Johannes Schmitt",
-                    "email": "schmittjoh@gmail.com"
-                }
-            ],
-            "description": "Common String Manipulations with regard to casing and singular/plural rules.",
-            "homepage": "http://www.doctrine-project.org",
-            "keywords": [
-                "inflection",
-                "pluralize",
-                "singularize",
-                "string"
-            ],
-            "time": "2018-01-09T20:05:19+00:00"
         },
         {
             "name": "eher/oauth",
@@ -590,36 +523,6 @@
             "time": "2019-03-28T13:52:31+00:00"
         },
         {
-            "name": "oddevan/oops-generators",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/oddevan/oops-generators.git",
-                "reference": "f054bd4848f9a95f4a322e1e3791528680e8f3eb"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/oddevan/oops-generators/zipball/f054bd4848f9a95f4a322e1e3791528680e8f3eb",
-                "reference": "f054bd4848f9a95f4a322e1e3791528680e8f3eb",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/inflector": "^1.3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "oddevan\\oopsGenerators\\": "src/"
-                }
-            },
-            "description": "A set of scripts to help bootstrap your OOPS-WP work even further",
-            "support": {
-                "source": "https://github.com/oddevan/oops-generators/tree/master",
-                "issues": "https://github.com/oddevan/oops-generators/issues"
-            },
-            "time": "2019-10-04T21:24:11+00:00"
-        },
-        {
             "name": "psr/http-message",
             "version": "1.0.1",
             "source": {
@@ -760,16 +663,16 @@
         },
         {
             "name": "webdevstudios/oops-wp",
-            "version": "0.2.1",
+            "version": "dev-refactor/meta-box-support",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WebDevStudios/oops-wp.git",
-                "reference": "780dce74d0afe81500eba4aee7fe0bda8445d3db"
+                "reference": "fa54a2f7f7cc38aadbc98a0e5a6d9bc9c23a0e6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WebDevStudios/oops-wp/zipball/780dce74d0afe81500eba4aee7fe0bda8445d3db",
-                "reference": "780dce74d0afe81500eba4aee7fe0bda8445d3db",
+                "url": "https://api.github.com/repos/WebDevStudios/oops-wp/zipball/fa54a2f7f7cc38aadbc98a0e5a6d9bc9c23a0e6d",
+                "reference": "fa54a2f7f7cc38aadbc98a0e5a6d9bc9c23a0e6d",
                 "shasum": ""
             },
             "require": {
@@ -781,7 +684,6 @@
                     "WebDevStudios\\OopsWP\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-2.0-or-later"
             ],
@@ -793,7 +695,11 @@
                 }
             ],
             "description": "A collection of interfaces and class structures to promote object-oriented programming practices in WordPress.",
-            "time": "2019-09-03T00:45:21+00:00"
+            "support": {
+                "source": "https://github.com/WebDevStudios/oops-wp/tree/refactor/meta-box-support",
+                "issues": "https://github.com/WebDevStudios/oops-wp/issues"
+            },
+            "time": "2019-10-14T13:22:20+00:00"
         },
         {
             "name": "webdevstudios/wds-required-plugins",
@@ -851,7 +757,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "oddevan/oops-generators": 20
+        "webdevstudios/oops-wp": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

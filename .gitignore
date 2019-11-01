@@ -1,6 +1,7 @@
 composer.phar
 /vendor/
 smolblog-config.php
+debug.log
 /themes/*
 /plugins/*
 /mu-plugins/*

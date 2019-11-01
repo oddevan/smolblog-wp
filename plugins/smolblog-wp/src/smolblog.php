@@ -26,7 +26,7 @@ class Smolblog extends Plugin {
 	 */
 	protected $services = [
 		Content\ContentRegistrar::class,
-		MetaBox\MetaBoxRegistrar::class,
+		//MetaBox\MetaBoxRegistrar::class,
 	];
 
 }

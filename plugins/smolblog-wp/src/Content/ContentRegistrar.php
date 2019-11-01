@@ -36,8 +36,18 @@ class ContentRegistrar extends Service {
 	 * @var Array $taxonomies array of Taxonomy classes
 	 * @since 0.1.0
 	 */
-	// protected $taxonomies = [
-	// ];
+	protected $taxonomies = [];
+
+	/**
+	 * List of ApiEndpoint classes that should be registered
+	 * by this service
+	 *
+	 * @var Array $endpoints array of ApiEndpoint classes
+	 * @since 0.1.0
+	 */
+	protected $endpoints = [
+		Endpoint\TwitterCallback::class,
+	];
 
 	/**
 	 * Called by Plugin class; register the hooks for this plugin
@@ -47,7 +57,8 @@ class ContentRegistrar extends Service {
 	 */
 	public function register_hooks() {
 		add_action( 'init', [ $this, 'register_post_types' ] );
-		// add_action( 'init', [ $this, 'register_taxonomies' ] );
+		add_action( 'init', [ $this, 'register_taxonomies' ] );
+		add_action( 'rest_api_init', [ $this, 'register_endpoints' ] );
 	}
 
 	/**
@@ -73,6 +84,19 @@ class ContentRegistrar extends Service {
 		foreach ( $this->taxonomies as $taxonomy_class ) {
 			$taxonomy = new $taxonomy_class();
 			$this->register_content( $taxonomy );
+		}
+	}
+
+	/**
+	 * Iterate through $endpoints and register them.
+	 *
+	 * @since 0.1.0
+	 * @author me@eph.me
+	 */
+	public function register_endpoints() {
+		foreach ( $this->endpoints as $endpoint_class ) {
+			$endpoint = new $endpoint_class();
+			$this->register_content( $endpoint );
 		}
 	}
 

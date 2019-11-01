@@ -76,7 +76,7 @@ class SocialConnection extends PostType {
 		return [
 			'label'             => __( 'Social Connection', 'smolblog' ),
 			'description'       => __( 'Connection information for importing/exporting information to/from an external website', 'smolblog' ),
-			'supports'          => [ 'custom-fields' ],
+			'supports'          => [ 'title', 'custom-fields' ],
 			'hierarchical'      => false,
 			'public'            => false,
 			'show_ui'           => true,

@@ -1,3 +1,7 @@
+# This repository is archived
+
+In the interest of supporting the greater WordPress community, Smolblog will not be a monolithic plugin. I'm keeping this repository around to reference the code that has been written so far; once it is obviated it will be deleted.
+
 # Smolblog for WordPress
 
 Smolblog is an idea. Smolblog is a state of mind. And yes, at least at first, it is a WordPress plugin.
